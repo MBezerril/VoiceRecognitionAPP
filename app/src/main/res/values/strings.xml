@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">VoiceRecognition</string>
+    <string name="btFalar">Toque para falar</string>
+    <string name="tvTexto">Texto da fala</string>
+</resources>

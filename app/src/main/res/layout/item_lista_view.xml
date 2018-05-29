@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    >
+
+    <TextView
+        android:id="@+id/txvNome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nome"
+        android:textSize="20sp"
+        android:textColor="#00a7f5" />
+
+    <TextView
+        android:id="@+id/txvQuantidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="quantidade"
+        android:textSize="18sp"
+        android:textColor="#111"/>
+
+</LinearLayout>
