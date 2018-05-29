@@ -43,9 +43,14 @@ public class ItemListaAdapter extends BaseAdapter {
         TextView txvQuantidade = (TextView) v.findViewById(R.id.txvQuantidade);
 
         txvNome.setText(listaDeItens.get(position).getNome());
-        String quant = "x" + String.valueOf(listaDeItens.get(position).getQuantidade());
+        String quant;
+        if(listaDeItens.get(position).getQuantidade()>1){
+            quant = "x" + String.valueOf(listaDeItens.get(position).getQuantidade());
+        }else
+        {
+            quant = "";
+        }
         txvQuantidade.setText(quant);
-
         return v;
     }
 }

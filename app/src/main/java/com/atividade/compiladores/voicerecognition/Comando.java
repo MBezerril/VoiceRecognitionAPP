@@ -6,13 +6,14 @@ import java.util.Arrays;
 public class Comando {
     private String comando;
     private ItemLista item;
+    private boolean processado = false;
     private ArrayList<String> entrada;
     private ArrayList<String> tokens;
     private ArrayList<String> classificacao;
-    private ArrayList<String> acoes = new ArrayList<String>(Arrays.asList("Inserir", " insira", " adicionar", " adicione", " colocar", " coloque", " incluir", " inclua", "Excluir",
-            " exclua", " deletar", " delete", " apagar", " apague", " remover", " remova", " exterminar", " extermine", "Buscar", " busque",
-            " pesquisar", " pesquise", " procurar", " procure", " achar", " ache", " Marcar", " marque"));
-    private ArrayList<String> artigos = new ArrayList<String>(Arrays.asList("o", "a"));
+    private ArrayList<String> acoes = new ArrayList<String>(Arrays.asList("inserir", "insira", "adicionar", "adicione", "colocar", "coloque", "incluir", "inclua", "excluir",
+            "exclua", "deletar", "delete", "apagar", "apague", "remover", "remova", "exterminar", "extermine", "buscar", "busque",
+            "pesquisar", "pesquise", "procurar", "procure", "achar", "ache", "Marcar", "marque"));
+    private ArrayList<String> artigos = new ArrayList<String>(Arrays.asList("o", "a", "os", "as"));
     private ArrayList<String> numeros = new ArrayList<String>(Arrays.asList("um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze",
             "doze", "treze", "quatorze", "catorze", "quinze", "dezesseis", "dezessete", "dezoito",
             "dezenove", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta",
@@ -20,51 +21,70 @@ public class Comando {
             "setecentos", "oitocentos", "novecentos", "mil"));
 
     private ArrayList<String> expressao = new ArrayList<String>(Arrays.asList("para", "mim", "por", "favor"));
-    int posicao = 0;
+    int posicao;
 
     //Constructor
     public Comando(String entrada) {
+        entrada = entrada.toLowerCase();
         this.entrada = new ArrayList<String>(Arrays.asList(entrada.split("\\s+")));
+        this.tokens = new ArrayList<String>();
+        this.item = new ItemLista("", 1);
+        this.classificacao = new ArrayList<String>();
+        this.comando = "";
+        this.posicao = 0;
     }
 
     private String getSimbolo() {
-        return tokens.get(posicao);
+        if (posicao < tokens.size())
+            return tokens.get(posicao);
+        else
+            return "";
     }
 
     private String getClassificacao() {
-        return classificacao.get(posicao);
+        if (posicao < classificacao.size())
+            return classificacao.get(posicao);
+        else
+            return "";
     }
 
     private boolean AnalisadorLexico() {
         for (int i = 0; i < entrada.size(); i++) {
             if (acoes.contains(entrada.get(i))) {
-                tokens.add(entrada.get(i).toLowerCase());
+                tokens.add(entrada.get(i));
                 classificacao.add("Acao");
             } else if (artigos.contains(entrada.get(i))) {
-                tokens.add(entrada.get(i).toLowerCase());
+                tokens.add(entrada.get(i));
                 classificacao.add("Artigo");
             } else if (numeros.contains(entrada.get(i))) {
-                tokens.add(entrada.get(i).toLowerCase());
+                tokens.add(entrada.get(i));
                 classificacao.add("Numero");
             } else if (expressao.contains(entrada.get(i))) {
                 if (entrada.get(i).equals("para") && entrada.get(i + 1).equals("mim")) {
-                    tokens.add(entrada.get(i).toLowerCase() + " " + entrada.get(i + 1).toLowerCase());
+                    tokens.add(entrada.get(i) + " " + entrada.get(i + 1));
                     classificacao.add("Expressao");
                     i++;
                 } else if (entrada.get(i).equals("por") && entrada.get(i + 1).equals("favor")) {
-                    tokens.add(entrada.get(i).toLowerCase() + " " + entrada.get(i + 1).toLowerCase());
+                    tokens.add(entrada.get(i) + " " + entrada.get(i + 1));
                     classificacao.add("Expressao");
                     i++;
+                } else {
+                    tokens.add(entrada.get(i));
+                    classificacao.add("Produto");
                 }
             } else {
-                tokens.add(entrada.get(i).toLowerCase());
+                tokens.add(entrada.get(i));
                 classificacao.add("Produto");
             }
         }
         return true;
     }
 
-    private boolean AnalisadorSintaticoSintatico() {
+    public boolean Processa() {
+        if (processado) return true;
+        //Analise Sintatica e Semantica
+        //Ao final o Item está preenchido e o tipo de comando
+        //caso tudo esteja correto no comando enviado
         if (AnalisadorLexico()) {
             Expressao();
             if (!Acao())
@@ -75,6 +95,9 @@ public class Comando {
             if (!Produto())
                 return false;
             Expressao();
+            if (posicao < tokens.size())
+                return false;
+            processado = true;
             return true;
         } else {
             return false;
@@ -85,8 +108,8 @@ public class Comando {
         if (!getClassificacao().equals("Acao"))
             return false;
         switch (getSimbolo()) {
-            case "inserir":
             case "insira":
+            case "inserir":
             case "adicionar":
             case "adicione":
             case "colocar":
@@ -114,19 +137,29 @@ public class Comando {
             default:
                 return false;
         }
+        posicao++;
         return true;
     }
 
     private void Artigo() {
-
+        if (getClassificacao().equals("Artigo"))
+            posicao++;
     }
 
     private boolean Produto() {
-        return false;
+        if (!getClassificacao().equals("Produto"))
+            return false;
+        StringBuilder nomeFinal = new StringBuilder();
+        while (posicao < tokens.size() && getClassificacao().equals("Produto")) {
+            nomeFinal.append(getSimbolo()).append(" ");
+            posicao++;
+        }
+        item.setNome(nomeFinal.toString());
+        return true;
     }
 
     private void Quantidade() {
-        if (!getClassificacao().equals("Quantidade"))
+        if (!getClassificacao().equals("Numero"))
             return;
         switch (getSimbolo()) {
             case "um":
@@ -229,11 +262,12 @@ public class Comando {
             posicao++;
     }
 
-    public String[] getComando() {
-        return null;
+    public String getComando() {
+        return comando;
     }
 
     public ItemLista getItem() {
-        return null;
+        return item;
     }
+
 }

@@ -6,11 +6,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VoiceRecognition extends AppCompatActivity {
+    // ESSE É O "MAIN" DO PROJETO
+    //Esse é o primeiro código a ser executado quando se abre o App
 
     private ListView lvLista;
     private EditText etInputText;
@@ -24,16 +27,27 @@ public class VoiceRecognition extends AppCompatActivity {
         lvLista = (ListView) findViewById(R.id.lvLista);
         etInputText = (EditText) findViewById(R.id.inputCommand);
         lista = new ArrayList<>();
-        lista.add(new ItemLista("Macarrao",10));
-        lista.add(new ItemLista("ovo",12));
-        lista.add(new ItemLista("Ford Focus",2));
-        iadpt =  new ItemListaAdapter(getApplicationContext(),lista);
+        lista.add(new ItemLista("Macarrao", 10));
+        lista.add(new ItemLista("ovo", 12));
+        lista.add(new ItemLista("Ford Focus", 2));
+        iadpt = new ItemListaAdapter(getApplicationContext(), lista);
         lvLista.setAdapter(iadpt);
     }
 
-    public void getText(View view){
-        String nome = etInputText.getText().toString();
-        lista.add(new ItemLista(nome,1));
+    public void getText(View view) {
+        Comando cmd;
+        String entrada = etInputText.getText().toString();
+        cmd = new Comando(entrada);
+        if (cmd.Processa()) {
+            if (cmd.getComando().equals("incluir")) {
+                lista.add(cmd.getItem());
+            }
+            else if (cmd.getComando().equals("excluir")) {
+                lista.remove(cmd.getItem());
+            }
+        }
+        else
+            Toast.makeText(getApplicationContext(), "FALHA", Toast.LENGTH_SHORT).show();
         iadpt.notifyDataSetChanged();
     }
 }
