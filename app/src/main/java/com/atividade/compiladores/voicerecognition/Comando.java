@@ -14,6 +14,10 @@ public class Comando {
             "exclua", "deletar", "delete", "apagar", "apague", "remover", "remova", "exterminar", "extermine", "buscar", "busque",
             "pesquisar", "pesquise", "procurar", "procure", "achar", "ache", "Marcar", "marque"));
     private ArrayList<String> artigos = new ArrayList<String>(Arrays.asList("o", "a", "os", "as"));
+    /**
+     * Assumindo que todos os números já fazem parte do dicionário, serão adicionados os números por extenso
+     * para completar todas as possibilidades de numeros serem passados para o comando
+     */
     private ArrayList<String> numeros = new ArrayList<String>(Arrays.asList("um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze",
             "doze", "treze", "quatorze", "catorze", "quinze", "dezesseis", "dezessete", "dezoito",
             "dezenove", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta",
@@ -21,7 +25,7 @@ public class Comando {
             "setecentos", "oitocentos", "novecentos", "mil"));
 
     private ArrayList<String> expressao = new ArrayList<String>(Arrays.asList("para", "mim", "por", "favor"));
-    int posicao;
+    private int posicao;
 
     //Constructor
     public Comando(String entrada) {
@@ -56,7 +60,7 @@ public class Comando {
             } else if (artigos.contains(entrada.get(i))) {
                 tokens.add(entrada.get(i));
                 classificacao.add("Artigo");
-            } else if (numeros.contains(entrada.get(i))) {
+            } else if (numeros.contains(entrada.get(i)) || android.text.TextUtils.isDigitsOnly(entrada.get(i))) {
                 tokens.add(entrada.get(i));
                 classificacao.add("Numero");
             } else if (expressao.contains(entrada.get(i))) {
@@ -252,6 +256,9 @@ public class Comando {
             default:
                 item.setQuantidade(1);
                 break;
+        }
+        if (android.text.TextUtils.isDigitsOnly(getSimbolo())) {
+            item.setQuantidade(Integer.parseInt(getSimbolo()));
         }
         posicao++;
     }
