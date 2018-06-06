@@ -1,6 +1,7 @@
 package com.atividade.compiladores.voicerecognition;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -49,6 +50,11 @@ public class ItemListaAdapter extends BaseAdapter {
         }else
         {
             quant = "";
+        }
+        if (listaDeItens.get(position).isMarcado()) {
+            v.setBackgroundColor(Color.GREEN);
+        } else {
+            v.setBackgroundColor(Color.WHITE);
         }
         txvQuantidade.setText(quant);
         return v;
