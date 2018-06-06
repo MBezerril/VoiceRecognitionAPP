@@ -3,7 +3,7 @@ package com.atividade.compiladores.voicerecognition;
 public class ItemLista {
     private String nome;
     private int quantidade;
-
+    private boolean marcado;
     //Constructor
 
     public ItemLista(String nome, int quantidade) {
@@ -27,5 +27,13 @@ public class ItemLista {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public boolean isMarcado() {
+        return marcado;
+    }
+
+    public void setMarcado(boolean marcado) {
+        this.marcado = marcado;
     }
 }
