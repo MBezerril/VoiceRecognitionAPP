@@ -151,6 +151,7 @@ public class VoiceRecognition extends AppCompatActivity {
                             ItemLista item = iter.next();
                             if (item.getNome().equals(nome)) {
                                 int position = lista.indexOf(item);
+                                item.setMarcado(true);
                                 lvLista.setSelection(position);
                                 lvLista.smoothScrollToPosition(position);
                                 found = true;
