@@ -4,7 +4,6 @@ public class ItemLista {
     private String nome;
     private int quantidade;
     private boolean marcado;
-
     //Constructor
 
     public ItemLista(String nome, int quantidade) {
