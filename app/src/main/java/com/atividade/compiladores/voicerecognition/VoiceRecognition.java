@@ -38,7 +38,9 @@ public class VoiceRecognition extends AppCompatActivity {
         lista = new ArrayList<ItemLista>();
         lista.add(new ItemLista("Macarrao", 10));
         lista.add(new ItemLista("ovo", 12));
-        lista.add(new ItemLista("Ford Focus", 2));
+        ItemLista it = new ItemLista("Ford Focus", 2);
+        it.setMarcado(true);
+        lista.add(it);
         iadpt = new ItemListaAdapter(getApplicationContext(), lista);
         lvLista.setAdapter(iadpt);
         lvLista.setFocusableInTouchMode(true);
