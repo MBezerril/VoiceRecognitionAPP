@@ -12,13 +12,13 @@ public class Comando {
     private ArrayList<String> classificacao;
     private ArrayList<String> acoes = new ArrayList<String>(Arrays.asList("inserir", "insira", "adicionar", "adicione", "colocar", "coloque", "incluir", "inclua", "excluir",
             "exclua", "deletar", "delete", "apagar", "apague", "remover", "remova", "exterminar", "extermine", "buscar", "busque",
-            "pesquisar", "pesquise", "procurar", "procure", "achar", "ache", "Marcar", "marque"));
+            "pesquisar", "pesquise", "procurar", "procure", "achar", "ache", "marcar", "marque"));
     private ArrayList<String> artigos = new ArrayList<String>(Arrays.asList("o", "a", "os", "as"));
     /**
      * Assumindo que todos os números já fazem parte do dicionário, serão adicionados os números por extenso
      * para completar todas as possibilidades de numeros serem passados para o comando
      */
-    private ArrayList<String> numeros = new ArrayList<String>(Arrays.asList("um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze",
+    private ArrayList<String> numeros = new ArrayList<String>(Arrays.asList("um", "uma", "dois", "duas", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze",
             "doze", "treze", "quatorze", "catorze", "quinze", "dezesseis", "dezessete", "dezoito",
             "dezenove", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta",
             "noventa", "cem", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos",
@@ -138,6 +138,10 @@ public class Comando {
             case "busque":
                 comando = "buscar";
                 break;
+            case "marcar":
+            case "marque":
+                comando = "marcar";
+                break;
             default:
                 return false;
         }
@@ -167,9 +171,11 @@ public class Comando {
             return;
         switch (getSimbolo()) {
             case "um":
+            case "uma":
                 item.setQuantidade(1);
                 break;
             case "dois":
+            case "duas":
                 item.setQuantidade(2);
                 break;
             case "três":
